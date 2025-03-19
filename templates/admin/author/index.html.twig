@@ -66,5 +66,13 @@
 		{% endfor %}
 	</ul>
 
+	{# Affichage de la pagination #}
+	<div class="pagination">
+		{{ pagerfanta(authors, {
+        'prev_message': 'Précédent',
+        'next_message': 'Suivant'
+    }) }}
+	</div>
+
 
 </section>{% endblock %}

@@ -6,6 +6,10 @@ use App\Entity\Author;
 use App\Form\AuthorType;
 use App\Repository\AuthorRepository;
 use Doctrine\ORM\EntityManagerInterface;
+
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +20,34 @@ use Symfony\Component\Routing\Attribute\Route;
 final class AuthorController extends AbstractController
 {
 
-    //afficher tous les auteurs & les auteurs vivants
+    // Afficher tous les auteurs, les auteurs vivants et les auteurs morts avec la pagination
+    #[Route('', name: 'app_admin_author_index', methods: ['GET'])]
+    public function index(Request $request, AuthorRepository $repository): Response
+    {
+        // Pagination pour tous les auteurs
+        $queryBuilder = $repository->createQueryBuilder('a');
+        $adapter = new QueryAdapter($queryBuilder);
+        $pagerfanta = new Pagerfanta($adapter);
+        $pagerfanta->setMaxPerPage(4); // Nombre d'auteurs par page
+        $pagerfanta->setCurrentPage($request->query->getInt('page', 1)); // Page actuelle depuis l'URL
+
+        // Récupération des auteurs vivants et morts
+        $livingAuthors = $repository->findLivingAuthors();
+        $deadAuthors = $repository->findDeadAuthors();
+
+        return $this->render('admin/author/index.html.twig', [
+            'controller_name' => 'AuthorController',
+            'authors' => $pagerfanta,  // Transmission de la pagination des auteurs
+            'livingAuthors' => $livingAuthors,  // Auteurs vivants
+            'deadAuthors' => $deadAuthors,  // Auteurs morts
+        ]);
+    }
+
+
+
+
+    /*
+    //afficher tous les auteurs & les auteurs vivants & les auteurs morts
     #[Route('', name: 'app_admin_author_index', methods: ['GET'])]
     public function index(AuthorRepository $repository): Response
     {
@@ -34,7 +65,7 @@ final class AuthorController extends AbstractController
             'deadAuthors' => $deadAuthors,
         ]);
     }
-
+*/
     //ajouter un auteur
     #[Route('/new', name: 'app_admin_author_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager): Response
