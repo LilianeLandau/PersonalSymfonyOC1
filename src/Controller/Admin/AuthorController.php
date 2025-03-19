@@ -16,15 +16,22 @@ use Symfony\Component\Routing\Attribute\Route;
 final class AuthorController extends AbstractController
 {
 
-    //afficher tous les auteurs
+    //afficher tous les auteurs & les auteurs vivants
     #[Route('', name: 'app_admin_author_index', methods: ['GET'])]
     public function index(AuthorRepository $repository): Response
     {
+        //afficher tous les auteurs
         $authors = $repository->findAll();
+        //afficher les auteurs vivants
+        $livingAuthors = $repository->findLivingAuthors();
+        //afficher les auteurs morts
+        $deadAuthors = $repository->findDeadAuthors();
 
         return $this->render('admin/author/index.html.twig', [
             'controller_name' => 'AuthorController',
             'authors' => $authors,
+            'livingAuthors' => $livingAuthors,
+            'deadAuthors' => $deadAuthors,
         ]);
     }
 
