@@ -26,6 +26,8 @@ class AuthorRepository extends ServiceEntityRepository
         //cela signifie que toutes le colonnes de l'entité Author peuvent
         //être appelées avec a.nomDeLaColonne
         //la ligne ->getQuery() transforme le QueryBuilder en objet Query
+        //la ligne->getQuery() transforme le DQL, Doctrine Query Language ,
+        //écrit dans le QueryBuilder en SQL exécutable par la base de données
         //la ligne ->getResult() exécute la requête
         // et retourne un tableau d'objets Author
         //en résumé :
