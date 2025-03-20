@@ -25,7 +25,8 @@ final class AuthorController extends AbstractController
     public function index(Request $request, AuthorRepository $repository): Response
     {
         // Pagination pour tous les auteurs
-        $queryBuilder = $repository->createQueryBuilder('a');
+        $queryBuilder = $repository->createQueryBuilder('a')
+            ->orderBy('a.name', 'ASC'); // Tri par nom
 
         $adapter = new QueryAdapter($queryBuilder);
         $pagerfanta = new Pagerfanta($adapter);

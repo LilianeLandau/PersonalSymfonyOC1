@@ -37,6 +37,7 @@ class AuthorRepository extends ServiceEntityRepository
         //exécute la requête et retourne un tableau d'objets Author
         return $this->createQueryBuilder('a')
             ->andWhere('a.dateOfDeath IS NULL')
+            ->orderBy('a.name', 'ASC')  // Tri par nom
             ->getQuery()
             ->getResult();
     }
@@ -46,11 +47,10 @@ class AuthorRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.dateOfDeath IS NOT NULL')
+            ->orderBy('a.name', 'ASC')  // Tri par nom
             ->getQuery()
             ->getResult();
     }
-
-
 
     //    /**
     //     * @return Author[] Returns an array of Author objects
