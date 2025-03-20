@@ -26,9 +26,10 @@ final class AuthorController extends AbstractController
     {
         // Pagination pour tous les auteurs
         $queryBuilder = $repository->createQueryBuilder('a');
+
         $adapter = new QueryAdapter($queryBuilder);
         $pagerfanta = new Pagerfanta($adapter);
-        $pagerfanta->setMaxPerPage(4); // Nombre d'auteurs par page
+        $pagerfanta->setMaxPerPage(5); // Nombre d'auteurs par page
         $pagerfanta->setCurrentPage($request->query->getInt('page', 1)); // Page actuelle depuis l'URL
 
         // Récupération des auteurs vivants et morts
@@ -66,11 +67,14 @@ final class AuthorController extends AbstractController
         ]);
     }
 */
-    //ajouter un auteur
+    //ajouter un auteur ou éditer un auteur
     #[Route('/new', name: 'app_admin_author_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $manager): Response
+
+    #[Route('/{id}/edit', name: 'app_admin_author_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+
+    public function new(?Author $author, Request $request, EntityManagerInterface $manager): Response
     {
-        $author = new Author();
+        $author ??= new Author(); //si l'auteur n'existe pas, on crée un nouvel auteur
         $form = $this->createForm(AuthorType::class, $author);
 
         $form->handleRequest($request);
@@ -92,6 +96,7 @@ final class AuthorController extends AbstractController
     {
         return $this->render('admin/author/show.html.twig', [
             'author' => $author,
+
         ]);
     }
 }
