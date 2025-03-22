@@ -3,10 +3,14 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Book;
-//classe qui permet de créer un formulaire
+use App\Enum\BookStatusEnum;
+use App\Repository\BookRepository;
+use App\Entity\Author;
+use App\Repository\AuthorRepository;
 use App\Form\BookType;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\DocBlock\Tags\Method;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,13 +21,27 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class BookController extends AbstractController
 {
-    #[Route('', name: 'app_admin_book_index')]
-    public function index(): Response
+    #[Route('', name: 'app_admin_book_index', methods: ['GET'])]
+    public function index(Request $request, BookRepository $bookRepository): Response
     {
+        $queryBuilder = $bookRepository->createQueryBuilder('b')
+            ->orderBy('b.title', 'ASC');
+
+        $adapter = new QueryAdapter($queryBuilder);
+        $pagerfanta = new Pagerfanta($adapter);
+        $pagerfanta->setMaxPerPage(4);
+        $pagerfanta->setCurrentPage($request->query->getInt('page', 1));
+
         return $this->render('admin/book/index.html.twig', [
             'controller_name' => 'BookController',
+            'books' => $pagerfanta,
         ]);
     }
+
+    //  return $this->render('admin/book/index.html.twig', [
+    //     'controller_name' => 'BookController',
+    // ]);
+    // }
 
 
     #[Route('/new', name: 'app_admin_book_new', methods: ['GET', 'POST'])]
