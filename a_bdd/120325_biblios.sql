@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 21 mars 2025 à 08:47
+-- Généré le : mer. 12 mars 2025 à 14:57
 -- Version du serveur : 8.4.3
 -- Version de PHP : 8.3.12
 
@@ -35,29 +35,15 @@ CREATE TABLE IF NOT EXISTS `author` (
   `date_of_death` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)',
   `nationality` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `author`
 --
 
 INSERT INTO `author` (`id`, `name`, `date_of_birth`, `date_of_death`, `nationality`) VALUES
-(4, 'Victor Hugo', '1802-02-26 00:00:00', '1885-05-22 00:00:00', 'FR'),
-(5, 'Albert Camus', '1913-11-07 00:00:00', '1960-01-04 00:00:00', 'FR'),
-(6, 'Marcel Proust', '1871-07-10 00:00:00', '1922-11-18 00:00:00', 'FR'),
-(7, 'Émile Zola', '1840-04-02 00:00:00', '1902-09-29 00:00:00', 'FR'),
-(8, 'Simone de Beauvoir', '1908-01-09 00:00:00', '1986-04-14 00:00:00', 'FR'),
-(9, 'Jean-Paul Sartre', '1905-06-21 00:00:00', '1980-04-15 00:00:00', 'FR'),
-(10, 'Antoine de Saint-Exupéry', '1900-06-29 00:00:00', '1944-07-31 00:00:00', 'FR'),
-(11, 'Charles Baudelaire', '1821-04-09 00:00:00', '1867-08-31 00:00:00', 'FR'),
-(12, 'William Shakespeare', '1564-04-23 00:00:00', '1616-04-23 00:00:00', 'GB'),
-(13, 'Mark Twain', '1835-11-30 00:00:00', '1910-04-21 00:00:00', 'US'),
-(14, 'J.K. Rowling', '1965-07-31 00:00:00', NULL, 'GB'),
-(15, 'George Orwell', '1903-06-25 00:00:00', '1950-01-21 00:00:00', 'GB'),
-(16, 'F. Scott Fitzgerald', '1896-09-24 00:00:00', '1940-12-21 00:00:00', 'US'),
-(17, 'Gabriel García Márquez', '1927-03-06 00:00:00', '2014-04-17 00:00:00', 'CO'),
-(18, 'Haruki Murakami', '1949-01-12 00:00:00', NULL, 'JP'),
-(20, 'Stendhal', '1783-01-23 00:00:00', '1842-03-23 00:00:00', 'FR');
+(1, 'Paul VERLAINE', '1844-03-30 00:00:00', '1896-01-08 00:00:00', 'Française'),
+(2, 'Stendhal', '1783-01-23 00:00:00', '1842-03-23 00:00:00', 'Française');
 
 -- --------------------------------------------------------
 
@@ -73,6 +59,14 @@ CREATE TABLE IF NOT EXISTS `author_book` (
   KEY `IDX_2F0A2BEEF675F31B` (`author_id`),
   KEY `IDX_2F0A2BEE16A2B381` (`book_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `author_book`
+--
+
+INSERT INTO `author_book` (`author_id`, `book_id`) VALUES
+(1, 1),
+(2, 2);
 
 -- --------------------------------------------------------
 
@@ -93,7 +87,15 @@ CREATE TABLE IF NOT EXISTS `book` (
   `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_CBE5A3316995AC4C` (`editor_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `book`
+--
+
+INSERT INTO `book` (`id`, `editor_id`, `title`, `isbn`, `cover`, `edited_at`, `plot`, `page_number`, `status`) VALUES
+(1, 1, 'Poèmes Saturniens', '123456789', 'http://cover', '0866-01-05 00:00:00', 'Poésie', 125, 'available'),
+(2, 2, 'Le Rouge et le Noir', '4856978', 'http://coverRougeNoir', '1830-11-13 00:00:00', 'histoire d\'amour', 320, 'borrowed');
 
 -- --------------------------------------------------------
 
@@ -148,7 +150,16 @@ CREATE TABLE IF NOT EXISTS `editor` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `editor`
+--
+
+INSERT INTO `editor` (`id`, `name`) VALUES
+(1, 'Larousse'),
+(2, 'Hachette'),
+(3, 'Bordas');
 
 -- --------------------------------------------------------
 

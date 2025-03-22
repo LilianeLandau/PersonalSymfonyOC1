@@ -3,7 +3,9 @@
 namespace App\DataFixtures;
 
 use App\Entity\Author;
-
+use App\Entity\Book;
+use App\Entity\Editor;
+use App\Enum\BookStatus;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -38,6 +40,14 @@ class AuthorFixtures extends Fixture
                 ->setDateOfBirth(new \DateTimeImmutable($authorData['dateOfBirth']))
                 ->setDateOfDeath($authorData['dateOfDeath'] ? new \DateTimeImmutable($authorData['dateOfDeath']) : null)
                 ->setNationality($authorData['nationality']);
+
+
+            // Ajouter une référence pour le récupérer dans BookFixtures
+            //  $referenceKey = 'author_' . strtolower(str_replace([' ', '.', '-'], '_', $authorData['name']));
+            // $this->addReference($referenceKey, $author);
+
+
+
             $manager->persist($author);
         }
 
