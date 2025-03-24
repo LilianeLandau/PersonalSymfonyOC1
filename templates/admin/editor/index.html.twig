@@ -1,20 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello EditorController!{% endblock %}
+{% block title %}Liste des Editeurs
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+	<section class="container px-4">
+		<h1>Liste des Editeurs</h1>
+		<ul class="list-group list-group-flush">
+			{% for editor in editors %}
+				<div class="card mb-1">
+					<div class="card-body">
+						<div class="card-title d-flex justify-content-between">
+							<h4 class="mb-1">{{ editor.name }}</h4>
+						</a>
+						<smallclass="text-muted">identifiant
+							{{ editor.id }}</small>
+					</div>
+				</div>
+			</div>
+		{% else %}
+			<li>Aucun enregistrement en base de données.</li>
+		{% endfor %}
+	</ul>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/landa/symfony/biblios/src/Controller/Admin/EditorController.php</code></li>
-        <li>Your template at <code>C:/Users/landa/symfony/biblios/templates/admin/editor/index.html.twig</code></li>
-    </ul>
-</div>
-{% endblock %}
+</section>
+{# Affichage de la pagination #}
+<div class="pagination">
+	{{ pagerfanta(editors, {
+        'prev_message': 'Précédent',
+        'next_message': 'Suivant'
+    }) }}
+</div>{% endblock %}
