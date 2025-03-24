@@ -29,7 +29,7 @@ final class EditorController extends AbstractController
 
         $adapter = new QueryAdapter($queryBuilder);
         $pagerfanta = new Pagerfanta($adapter);
-        $pagerfanta->setMaxPerPage(2);
+        $pagerfanta->setMaxPerPage(5);
         $pagerfanta->setCurrentPage($request->query->getInt('page', 1));
 
         return $this->render('admin/editor/index.html.twig', [
@@ -54,6 +54,15 @@ final class EditorController extends AbstractController
 
         return $this->render('admin/editor/new.html.twig', [
             'form' => $form,
+        ]);
+    }
+
+    //détails d'un éditeur
+    #[Route('/{id}', name: 'app_admin_editor_show', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function show(Editor $editor): Response
+    {
+        return $this->render('admin/editor/show.html.twig', [
+            'editor' => $editor,
         ]);
     }
 }
