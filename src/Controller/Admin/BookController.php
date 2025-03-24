@@ -29,7 +29,7 @@ final class BookController extends AbstractController
 
         $adapter = new QueryAdapter($queryBuilder);
         $pagerfanta = new Pagerfanta($adapter);
-        $pagerfanta->setMaxPerPage(4);
+        $pagerfanta->setMaxPerPage(6);
         $pagerfanta->setCurrentPage($request->query->getInt('page', 1));
 
         return $this->render('admin/book/index.html.twig', [
@@ -38,10 +38,6 @@ final class BookController extends AbstractController
         ]);
     }
 
-    //  return $this->render('admin/book/index.html.twig', [
-    //     'controller_name' => 'BookController',
-    // ]);
-    // }
 
 
     #[Route('/new', name: 'app_admin_book_new', methods: ['GET', 'POST'])]
@@ -73,6 +69,14 @@ final class BookController extends AbstractController
 
         return $this->render('admin/book/new.html.twig', [
             'form' => $form,
+        ]);
+    }
+    //voir les détails d'un livre
+    #[Route('/{id}', name: 'app_admin_book_show', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function show(?Book $book): Response
+    {
+        return $this->render('admin/book/show.html.twig', [
+            'book' => $book,
         ]);
     }
 }
