@@ -28,15 +28,15 @@ class RegistrationFormType extends AbstractType
                     'User' => 'ROLE_USER',
                     'Admin' => 'ROLE_ADMIN',
                 ],
-                'expanded' => true,
-                'multiple' => true,
+                'expanded' => true, //afiche les choix sous forme de checkbox
+                'multiple' => true, //permet un choix multiple
             ])
 
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
+                'attr' => ['autocomplete' => 'new-password'], //empêche le navigateur de remplir automatiquement le champ
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',
@@ -45,15 +45,19 @@ class RegistrationFormType extends AbstractType
                         'min' => 3,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
                         // max length allowed by Symfony for security reasons
-                        'max' => 4096,
+                        'max' => 255,
                     ]),
                 ],
             ])
         ;
     }
 
+
+    //méthode configure les options du formulaire, en spécifiant la classe de données liée.
     public function configureOptions(OptionsResolver $resolver): void
     {
+
+        //Définit l'entité User comme classe liée aux données du formulaire
         $resolver->setDefaults([
             'data_class' => User::class,
         ]);
